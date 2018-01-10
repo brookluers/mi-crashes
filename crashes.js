@@ -1,13 +1,13 @@
 var w = 700;
 var h = 350;
-var w_textselector = 145,
+var w_textselector = 180,
     w_textlabel = 35;
-var h_textbottom = 150;
 var y_statelabel, ylab = " crashes per 100,000 residents";
 var svg_padding = 75;
 var ccr;
 var counties, counties_num, counties_display;
 var showing_rate = true;
+var selectors_ready = false, counties_ready = false;
 var active_counties = [];
 active_counties["Michigan"] = true;
 var county_pop16;
@@ -142,13 +142,15 @@ var ncounties = 83;
 var textnrows = 6;
 var textrowsize = Math.ceil(ncounties / textnrows);
 var xtband = d3.scaleBand()
-    .domain([0,1]);
+    .domain([0,1])
+    .range([0, w_textselector ]); 
 var ytband = d3.scaleBand()
-    .domain(d3.range(0, ncounties / 1.5 + 4));  // (0, textnrows));
-
+    .domain(d3.range(0, ncounties / 1.5 + 4))
+    .range([40, 2 * h - svg_padding + 25]); 
     
 var x = d3.scaleLinear()
     .range([svg_padding + 160, w - svg_padding - w_textlabel])
+    .domain([2004, 2016])
     .nice();
 
 var xAxis = d3.axisBottom();
@@ -204,11 +206,9 @@ d3.csv("cr-county-year.csv", rowConv, function(error, data) {
 			    })
 		    };
 		});
-	    x.domain([2004, 2016]); 
-	    yAxis.tickSize(x(2016));
 	    
-	    xtband.range([0, w_textselector ]); 
-	    ytband.range([40, 2 * h - svg_padding]); 
+	    yAxis.tickSize(x(2016));
+
 	    
 	    y.domain([
 		      d3.min(counties, function(c) { return d3.min(c.years_yvals, function(d) { return d.yval; }); }),
@@ -241,7 +241,9 @@ d3.csv("cr-county-year.csv", rowConv, function(error, data) {
 		.style("text-anchor","end")
 		.call(customYAxis);
 
-
+	    counties_display = counties;
+	    counties_ready = true;
+	    after_loading();
 	}
     });
 
@@ -279,7 +281,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.attr("y", function(d, i) { 
 			return ytband(i>40 ? i - 41 + 2 : i + 2); 
 	       })
-		.attr("font-size", "8px")
+		.attr("font-size", "10px")
 		.attr("fill", "rgb(13,13,13)")
 		.attr("opacity", "0.75")
 		.text(function(d) { return d.county == "Michigan" ? "" : d.county;} )
@@ -295,7 +297,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.classed("inactive", true)
 		.attr("x", xtband(0))
 		.attr("y", ytband(0))
-		.attr("font-size", "10px")
+		//.attr("font-size", "10px")
 		.attr("fill", "rgb(13,13,13)")
 		.attr("opacity", "0.75")
 		.text("None")
@@ -304,7 +306,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 	    svg.append("text")
 		.attr("x", x(2010))
 		.attr("y", 18)
-		.text("Cyclist-involved crashes in Michigan counties")
+		.text("")
 		.style("font-size", "20px")
 		.style("text-anchor", "middle")
 		.style("fill", "rgb(13,13,13)");
@@ -324,16 +326,22 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.attr("id","selectprompt")
 		.attr("x", xtband(0))
 		.attr("y", 18)
-		.attr("font-size", "11px")
+		.attr("font-size", "14px")
 		.style("font-style", "italic")
 		.text("select counties");
 	    
-	    counties_display = counties;
-	    
-	    show_counties(counties_display.filter(function(d) {return active_counties[d.county]==true;} ));
-	    
+	    selectors_ready = true;
+
+	    after_loading();
 	}
     });
+
+function after_loading() {
+    if (selectors_ready && counties_ready) {
+	show_counties(counties_display.filter(function(d) {return active_counties[d.county]==true;} ));
+    }
+    
+}
 
 function show_counties(current_counties) {
     var county = svg.selectAll(".county")
