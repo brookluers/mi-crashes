@@ -2,11 +2,13 @@
 
 How many bicyclist-involved car crashes occur in Michigan counties? This is a rough visualization of annual car-cyclist crash rates (and counts) in Michigan counties between 2004 and 2016.
 
-Crash data obtained in late 2017 from [Michigan Traffic Crash Facts](https://www.michigantrafficcrashfacts.org/).
+See the visualization <a href="http://www.brookluers.com/vis/mi-crashes/" target="_blank">here</a>.
 
-Population counts obtained from https://factfinder.census.gov.
+Crash data obtained in late 2017 from <a href="https://www.michigantrafficcrashfacts.org/" target="_blank">Michigan Traffic Crash Facts</a>.
 
-Visualized with [d3](https://d3js.org/).
+County population counts obtained from <a href="https://factfinder.census.gov" target="_blank"></a>.
+
+Visualized with <a href="https://d3js.org/" target="_blank">d3</a>.
 
 ## Todo
 
