@@ -145,8 +145,8 @@ var xtband = d3.scaleBand()
     .domain([0,1])
     .range([0, w_textselector ]); 
 var ytband = d3.scaleBand()
-    .domain(d3.range(0, ncounties / 1.5 + 4))
-    .range([40, 2 * h - svg_padding + 25]); 
+    .domain(d3.range(0, 44))
+    .range([40, 1.5 * h]); 
     
 var x = d3.scaleLinear()
     .range([svg_padding + 160, w - svg_padding - w_textlabel])
@@ -260,7 +260,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 	    //svg.selectAll(".county-selector")
 	    d3.select("#text-selectors")
 		.append("svg")
-		.attr("height",2 * h)
+		.attr("height", 1.5 * h)
 		.attr("width", w_textselector)
 		.selectAll(".county-selector")
 		.data(county_pop16, function(d) { return d.county; })
@@ -303,16 +303,16 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.text("None")
 		.on("mouseover", selector_mover);
 
+	    //svg.append("text")
+	    //	.attr("x", x(2010))
+	    //.attr("y", 18)
+	    //.text("")
+	    //.style("font-size", "20px")
+	    //.style("text-anchor", "middle")
+	    //.style("fill", "rgb(13,13,13)");
 	    svg.append("text")
 		.attr("x", x(2010))
 		.attr("y", 18)
-		.text("")
-		.style("font-size", "20px")
-		.style("text-anchor", "middle")
-		.style("fill", "rgb(13,13,13)");
-	    svg.append("text")
-		.attr("x", x(2010))
-		.attr("y", 42)
 		.text("rate (click to change)")
 		.style("font-size", "14px")
 		.style("font-style", "italic")
