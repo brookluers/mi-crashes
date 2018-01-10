@@ -6,7 +6,7 @@ See the visualization <a href="http://www.brookluers.com/vis/mi-crashes/" target
 
 Crash data obtained in late 2017 from <a href="https://www.michigantrafficcrashfacts.org/" target="_blank">Michigan Traffic Crash Facts</a>.
 
-County population counts obtained from <a href="https://factfinder.census.gov" target="_blank"></a>.
+County population counts obtained from <a href="https://factfinder.census.gov" target="_blank">https://factfinder.census.gov</a>.
 
 Visualized with <a href="https://d3js.org/" target="_blank">d3</a>.
 
