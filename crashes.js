@@ -139,14 +139,14 @@ function onmouseout(d, i) {
 }
 
 var ncounties = 83;
-var textnrows = 6;
-var textrowsize = Math.ceil(ncounties / textnrows);
-var xtband = d3.scaleBand()
-    .domain([0,1])
-    .range([0, w_textselector ]); 
+var textnrows = 25;
+var textncol  = Math.ceil(ncounties / textnrows);
+var xtband = d3.scalePoint()
+    .domain(d3.range(0, textncol))
+    .range([50, w - 75]);
 var ytband = d3.scaleBand()
-    .domain(d3.range(0, 44))
-    .range([40, 1.5 * h]); 
+    .domain(d3.range(0, textnrows))
+    .range([60, h-10]);
     
 var x = d3.scaleLinear()
     .range([svg_padding + 160, w - svg_padding - w_textlabel])
@@ -276,10 +276,10 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 			return i < 25; })
 		.classed("inactive", function(d, i) { return i >= 25; })
 		.attr("x", function(d, i) { 
-			return xtband( +(i>40));
+			return xtband(Math.floor(i / textnrows));
 		  })
 		.attr("y", function(d, i) { 
-			return ytband(i>40 ? i - 41 + 2 : i + 2); 
+			return ytband(i - Math.floor(i/textnrows)*textnrows); 
 	       })
 		.attr("font-size", "10px")
 		.attr("fill", "rgb(13,13,13)")
@@ -296,7 +296,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.classed("active", false)
 		.classed("inactive", true)
 		.attr("x", xtband(0))
-		.attr("y", ytband(0))
+		.attr("y", 30)
 		//.attr("font-size", "10px")
 		.attr("fill", "rgb(13,13,13)")
 		.attr("opacity", "0.75")
@@ -325,7 +325,7 @@ d3.csv("county-pop16.txt", function(d, i, columns) {
 		.append("text")
 		.attr("id","selectprompt")
 		.attr("x", xtband(0))
-		.attr("y", 18)
+		.attr("y", 10)
 		.attr("font-size", "14px")
 		.style("font-style", "italic")
 		.text("select counties");
